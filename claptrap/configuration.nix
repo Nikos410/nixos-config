@@ -55,7 +55,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.nikos = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "docker" ]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keyFiles = [ ./nikos_authorized_keys ];
   };
 
@@ -71,13 +71,14 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    docker
     docker-compose
     git
     htop
     vim
     wget
   ];
+
+  virtualisation.docker.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
