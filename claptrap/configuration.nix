@@ -97,6 +97,12 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
+  fileSystems."/srv" =
+  { 
+    device = "/dev/disk/by-uuid/8f27effa-0b86-44b3-89dd-86a1974c8cd9";
+    fsType = "ext4";
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
