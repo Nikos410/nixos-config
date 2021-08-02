@@ -55,7 +55,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.nikos = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "sudo" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keyFiles = [ ./nikos_authorized_keys ];
   };
 
