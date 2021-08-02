@@ -5,25 +5,25 @@
 { config, pkgs, ... }:
 
 {
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "claptrap"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  environment.systemPackages = with pkgs; [
+    docker-compose
+    git
+    htop
+    vim
+    wget
+  ];
 
-  # Set your time zone.
-  time.timeZone = "Europe/Berlin";
+  services.openssh.enable = true;
 
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  networking.useDHCP = false;
-  networking.interfaces.enp4s0.useDHCP = true;
+  virtualisation.docker.enable = true;
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  users.users.nikos = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "docker" ];
+    openssh.authorizedKeys.keyFiles = [ ./nikos_authorized_keys ];
+    shell = pkgs.zsh;
+  };
 
   # Select internationalisation properties.
   # i18n.defaultLocale = "en_US.UTF-8";
@@ -32,33 +32,9 @@
   #   keyMap = "us";
   # };
 
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-
-
-  
-
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e";
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.nikos = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "docker" ];
-    openssh.authorizedKeys.keyFiles = [ ./nikos_authorized_keys ];
-    shell = pkgs.zsh;
-  };
 
   security.sudo.extraRules = [
     {
@@ -69,42 +45,28 @@
     }
   ];
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    docker-compose
-    git
-    htop
-    vim
-    wget
-  ];
+  time.timeZone = "Europe/Berlin";
 
-  virtualisation.docker.enable = true;
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-
-  # Open ports in the firewall.
+  networking.hostName = "claptrap";
+  
+  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
+  # Per-interface useDHCP will be mandatory in the future, so this generated config
+  # replicates the default behaviour.
+  networking.useDHCP = false;
+  networking.interfaces.enp4s0.useDHCP = true;
+  
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [ 22 80 443 ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   fileSystems."/srv" =
   { 
     device = "/dev/disk/by-uuid/8f27effa-0b86-44b3-89dd-86a1974c8cd9";
     fsType = "ext4";
   };
+
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
