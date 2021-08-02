@@ -57,6 +57,7 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "docker" ];
     openssh.authorizedKeys.keyFiles = [ ./nikos_authorized_keys ];
+    shell = pkgs.zsh;
   };
 
   security.sudo.extraRules = [
