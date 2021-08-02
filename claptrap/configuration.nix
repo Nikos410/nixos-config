@@ -36,6 +36,10 @@
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e";
 
+  system.autoUpgrade.enable = true;
+  system.autoUpgrade.channel = https://nixos.org/channels/nixos-21.05;
+  system.autoUpgrade.allowReboot = true;
+
   security.sudo.extraRules = [
     {
       groups = [ "wheel" ];
