@@ -34,12 +34,6 @@
     home = "/srv/no-backup/jan" ;
   };
 
-  users.users.steffen = {
-    isNormalUser = true;
-    hashedPassword = "$6$s4W6kLSpGZ$1nnIjU/kpkxs0ZHd/YVdFvC8MemHqB2pp2tyJouqu1JCNgQ7L.IoSBe18dy2rjLzxSHxsQLfWhw8OYWgYZitZ/";
-    shell = pkgs.zsh;
-    home = "/srv/no-backup/steffen" ;
-  };
 
   # Select internationalisation properties.
   # i18n.defaultLocale = "en_US.UTF-8";
