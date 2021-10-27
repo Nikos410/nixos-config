@@ -47,7 +47,7 @@
   # services.xserver.xkbOptions = "eurosign:e";
 
   system.autoUpgrade.enable = true;
-  system.autoUpgrade.channel = https://nixos.org/channels/nixos-21.05;
+  system.autoUpgrade.channel = https://nixos.org/channels/nixos-21.05-small;
   system.autoUpgrade.allowReboot = false;
 
   security.sudo.extraRules = [
