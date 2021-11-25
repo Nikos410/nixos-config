@@ -18,6 +18,15 @@
 
   virtualisation.docker.enable = true;
 
+  services.cron = {
+    enable = true;
+    systemCronJobs = [
+      "00 1 * * *      root    docker image prune"
+      "30 1 * * *      root    nix-collect-garbage"
+      "00 2 * * *      root    docker exec seafile-server /scripts/gc.sh"
+    ];
+  };
+
   users.mutableUsers = false;
 
   users.users.nikos = {
@@ -33,18 +42,6 @@
     shell = pkgs.zsh;
     home = "/srv/no-backup/jan" ;
   };
-
-
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
-
-  # Configure keymap in X11
-  # services.xserver.layout = "us";
-  # services.xserver.xkbOptions = "eurosign:e";
 
   system.autoUpgrade.enable = true;
   system.autoUpgrade.channel = https://nixos.org/channels/nixos-21.05-small;
