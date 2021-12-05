@@ -35,12 +35,6 @@
     openssh.authorizedKeys.keyFiles = [ ./nikos_authorized_keys ];
     shell = pkgs.zsh;
   };
-
-  users.users.paperless-ftp = {
-    isNormalUser = true;
-    hashedPassword = "$6$L/Oykl0jzlR$kEmThJZWDeJv10ZGP8CBydXPdHbAotYBcYJ4AGqhCYT5Y0GYObVGYjV358c/Z/TpWO2Hzn/JCjs5c0vHrY29a0";
-    home = "/srv/no-backup/paperless-ftp";
-  };
  
   users.users.jan = {
     isNormalUser = true;
