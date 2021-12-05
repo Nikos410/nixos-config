@@ -21,9 +21,9 @@
   services.cron = {
     enable = true;
     systemCronJobs = [
-      "00 1 * * *      root    docker image prune"
-      "30 1 * * *      root    nix-collect-garbage"
-      "00 2 * * *      root    docker exec seafile-server /scripts/gc.sh"
+      "00 1 * * * root docker image prune > /var/log/cron/docker-image-prune.log"
+      "30 1 * * * root nix-collect-garbage > /var/log/cron/nix-collect-garbage.log"
+      "00 2 * * * root docker exec seafile-server /scripts/gc.sh > /var/log/cron/seafile-gc.log"
     ];
   };
 
