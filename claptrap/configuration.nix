@@ -10,6 +10,8 @@
     docker-compose
     git
     htop
+    mt-st
+    sg3_utils
     vim
     wget
   ];
