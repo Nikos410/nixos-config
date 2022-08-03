@@ -15,6 +15,8 @@
   ];
 
   services.openssh.enable = true;
+  services.openssh.kbdInteractiveAuthentication = false;
+  services.openssh.passwordAuthentication = false;
 
   virtualisation.docker.enable = true;
 
@@ -33,6 +35,9 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "docker" ];
     openssh.authorizedKeys.keyFiles = [ ../nikos_authorized_keys ];
+    # Plaintext in BitWarden
+    # Only for local access -> services.openssh.passwordAuthentication is disabled!
+    hashedPassword = "$6$6eJ3cM/8cGwsnwlg$ik9FZkPiTp.GEqiCwhuHBNjhMq/hxXzYPWFWgj5N7jIRXL6fc6XlT.klsfMvKLn8sTYgxoCH909.XAgzIwgnL0";
     shell = pkgs.zsh;
   };
  
