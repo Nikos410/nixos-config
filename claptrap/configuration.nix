@@ -12,6 +12,7 @@
     htop
     mt-st
     sg3_utils
+    tmux
     vim
     wget
   ];
