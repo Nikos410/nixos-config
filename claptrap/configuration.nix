@@ -67,6 +67,7 @@
   time.timeZone = "Europe/Berlin";
 
   networking.hostName = "claptrap";
+  networking.nameservers = [ "2620:fe::11" "2620:fe::fe:11" "9.9.9.10" "149.112.112.11" ];
   
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
