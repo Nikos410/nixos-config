@@ -45,7 +45,7 @@
   };
  
   system.autoUpgrade.enable = true;
-  system.autoUpgrade.channel = https://nixos.org/channels/nixos-22.05-small;
+  system.autoUpgrade.channel = https://nixos.org/channels/nixos-22.11-small;
   system.autoUpgrade.allowReboot = false;
 
   security.sudo.extraRules = [
