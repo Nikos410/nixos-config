@@ -52,7 +52,7 @@
  
   system.autoUpgrade.enable = true;
   system.autoUpgrade.channel = https://nixos.org/channels/nixos-22.11-small;
-  system.autoUpgrade.allowReboot = false;
+  system.autoUpgrade.allowReboot = true;
 
   security.sudo.extraRules = [
     {
