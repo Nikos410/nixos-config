@@ -32,6 +32,12 @@
     ];
   };
 
+  systemd.timers.nixos-upgrade = {
+    wantedBy = [ "timers.target" ];
+    partOf = [ "nixos-upgrade.service" ];
+    timerConfig.OnCalendar = [ "*-*-* 03:00:00" ];
+  };
+
   users.mutableUsers = false;
 
   users.users.nikos = {
