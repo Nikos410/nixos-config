@@ -75,7 +75,7 @@
   networking.interfaces.enp6s0.useDHCP = true;
   
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 22 80 443 ];
+  networking.firewall.allowedTCPPorts = [ 22 80 443 9000 9001 ];
 
   fileSystems."/srv" =
   { 
