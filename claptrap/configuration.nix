@@ -15,6 +15,7 @@
     tmux
     vim
     wget
+    inetutils
   ];
 
   services.openssh.enable = true;
