@@ -33,10 +33,14 @@
     ];
   };
 
-  systemd.timers.nixos-upgrade = {
+  systemd.timers.nixos-upgrade.enable = false;
+  systemd.timers.nixos-upgrade-weekly = {
     wantedBy = [ "timers.target" ];
     partOf = [ "nixos-upgrade.service" ];
-    timerConfig.OnCalendar = [ "*-*-* 03:00:00" ];
+    timerConfig = {
+      OnCalendar = [ "Sun *-*-* 03:00" ];
+      Unit = "nixos-upgrade.service";
+    };
   };
 
   users.mutableUsers = false;
