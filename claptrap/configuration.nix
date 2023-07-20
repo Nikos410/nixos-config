@@ -16,13 +16,18 @@
     vim
     wget
     inetutils
+    speedtest-cli
   ];
 
-  services.openssh.enable = true;
-  services.openssh.kbdInteractiveAuthentication = false;
-  services.openssh.passwordAuthentication = false;
+  programs.zsh.enable = true;
 
-  virtualisation.docker.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      KbdInteractiveAuthentication = false;
+      PasswordAuthentication = false;
+    };
+  };
 
   services.cron = {
     enable = true;
@@ -30,8 +35,12 @@
       "20 3 * * 6 root docker image prune --all --force > /var/log/cron/docker-image-prune.log"
       "25 3 * * 6 root nix-collect-garbage -d > /var/log/cron/nix-collect-garbage.log"
       "30 3 * * * root docker exec seafile-server /scripts/gc.sh > /var/log/cron/seafile-gc.log"
+      "40 * * * * root docker restart invidious-server > /var/log/cron/invidious-restart.log"
     ];
   };
+
+  virtualisation.docker.enable = true;
+  boot.enableContainers = false;
 
   systemd.timers.nixos-upgrade.enable = false;
   systemd.timers.nixos-upgrade-weekly = {
@@ -44,7 +53,6 @@
   };
 
   users.mutableUsers = false;
-
   users.users.nikos = {
     isNormalUser = true;
     extraGroups = [ "wheel" "docker" ];
@@ -56,7 +64,8 @@
   };
  
   system.autoUpgrade.enable = true;
-  system.autoUpgrade.channel = https://nixos.org/channels/nixos-22.11-small;
+  # This is just for the auto upgrades. For switching the whole systems to a new channel, run > sudo nix-channel --add https://nixos.org/channels/nixos-xx.yy-small nixos 
+  system.autoUpgrade.channel = https://nixos.org/channels/nixos-23.05-small;
   system.autoUpgrade.allowReboot = true;
 
   security.sudo.extraRules = [
@@ -87,10 +96,24 @@
     device = "/dev/disk/by-uuid/8f27effa-0b86-44b3-89dd-86a1974c8cd9";
     fsType = "ext4";
   };
+  # Monitoring for RAID
+  environment.etc."mdadm.conf".text = ''
+    MAILADDR info@nikos410.de
+  '';
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot";
+  boot.loader = {
+    systemd-boot.enable = false;
+    grub = {
+      devices = [ "nodev" ];
+      enable = true;
+      efiSupport = true;
+      useOSProber = false;
+    };
+  };
+
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
