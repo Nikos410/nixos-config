@@ -9,14 +9,15 @@
   environment.systemPackages = with pkgs; [
     docker-compose
     git
+    inetutils
     htop
     mt-st
     sg3_utils
+    speedtest-cli
     tmux
+    unzip
     vim
     wget
-    inetutils
-    speedtest-cli
   ];
 
   programs.zsh.enable = true;
@@ -32,10 +33,12 @@
   services.cron = {
     enable = true;
     systemCronJobs = [
-      "20 3 * * 6 root docker image prune --all --force > /var/log/cron/docker-image-prune.log"
-      "25 3 * * 6 root nix-collect-garbage -d > /var/log/cron/nix-collect-garbage.log"
-      "30 3 * * * root docker exec seafile-server /scripts/gc.sh > /var/log/cron/seafile-gc.log"
-      "40 * * * * root docker restart invidious-server > /var/log/cron/invidious-restart.log"
+      # seafile GC takes about 30 minutes, so we shoud have sufficient time before backup runs (04:00)
+      "0 3 * * * root docker exec seafile-server /scripts/gc.sh > /var/log/cron/seafile-gc.log" 
+      # Backup runs at 04:00, Restart happens at 05:00
+      "0 6 * * 6 root docker image prune --all --force > /var/log/cron/docker-image-prune.log"
+      "0 7 * * 6 root nix-collect-garbage -d > /var/log/cron/nix-collect-garbage.log"
+      "0 * * * * root docker restart invidious-server > /var/log/cron/invidious-restart.log"
     ];
   };
 
@@ -47,7 +50,7 @@
     wantedBy = [ "timers.target" ];
     partOf = [ "nixos-upgrade.service" ];
     timerConfig = {
-      OnCalendar = [ "Sun *-*-* 03:00" ];
+      OnCalendar = [ "Sun *-*-* 05:00" ];
       Unit = "nixos-upgrade.service";
     };
   };
@@ -65,6 +68,7 @@
  
   system.autoUpgrade.enable = true;
   # This is just for the auto upgrades. For switching the whole systems to a new channel, run > sudo nix-channel --add https://nixos.org/channels/nixos-xx.yy-small nixos 
+  # See https://status.nixos.org/ for list of channels and their status
   system.autoUpgrade.channel = https://nixos.org/channels/nixos-23.05-small;
   system.autoUpgrade.allowReboot = true;
 
@@ -96,10 +100,17 @@
     device = "/dev/disk/by-uuid/8f27effa-0b86-44b3-89dd-86a1974c8cd9";
     fsType = "ext4";
   };
+
   # Monitoring for RAID
   environment.etc."mdadm.conf".text = ''
     MAILADDR info@nikos410.de
   '';
+
+  fileSystems."/backup" =
+  { 
+    device = "/dev/disk/by-uuid/3bdc3b1d-bff5-4067-8422-ca6b82858170";
+    fsType = "ext4";
+  };
 
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
