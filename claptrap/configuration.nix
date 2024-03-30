@@ -67,9 +67,12 @@
   };
  
   system.autoUpgrade.enable = true;
-  # This is just for the auto upgrades. For switching the whole systems to a new channel, run > sudo nix-channel --add https://nixos.org/channels/nixos-xx.yy-small nixos 
+  # This is just for the auto upgrades. For switching the whole systems to a new channel, run:
+  #  > sudo nix-channel --add https://nixos.org/channels/nixos-xx.yy-small nixos
+  #  > sudo nix-channel --update
+  #  > sudo nixos-rebuild switch
   # See https://status.nixos.org/ for list of channels and their status
-  system.autoUpgrade.channel = https://nixos.org/channels/nixos-23.05-small;
+  system.autoUpgrade.channel = https://nixos.org/channels/nixos-23.11-small;
   system.autoUpgrade.allowReboot = true;
 
   security.sudo.extraRules = [
