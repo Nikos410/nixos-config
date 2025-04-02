@@ -7,6 +7,7 @@
 {
 
   environment.systemPackages = with pkgs; [
+    awscli2
     docker-compose
     git
     inetutils
@@ -72,7 +73,7 @@
   #  > sudo nix-channel --update
   #  > sudo nixos-rebuild switch
   # See https://status.nixos.org/ for list of channels and their status
-  system.autoUpgrade.channel = https://nixos.org/channels/nixos-23.11-small;
+  system.autoUpgrade.channel = https://nixos.org/channels/nixos-24.11-small;
   system.autoUpgrade.allowReboot = true;
 
   security.sudo.extraRules = [
